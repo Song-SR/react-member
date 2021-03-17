@@ -11,7 +11,6 @@ class App extends Component {
     this.selected_list_num = 0;
     this.state = {
       mode:'list',
-      add_member:{num:1,id:'ID',password:'1234',name:'name'},
       contents:[
         // {num:1, id:"Admin", password:'1234', name:'Song'}
       ]}}
@@ -44,7 +43,20 @@ class App extends Component {
     }else if(this.state.mode === "update"){
       _article = <UpdateMember
        data = {this.getReadContent()}
-       onSubmit={function(_id, _password, _name){
+       onSubmit={function(_num, _id, _password, _name){
+        var _contents = Array.from(this.state.contents);
+        var i = 0;
+        while(i < _contents.length){
+          if(i+1 === Number(_num)){
+            _contents[i] = {num:i+1, id:_id, password:_password, name:_name}
+            break;
+          }
+          i += 1;
+        }
+        this.setState({
+          contents:_contents,
+          mode:'list'
+        })
 
        }.bind(this)}
        ></UpdateMember>

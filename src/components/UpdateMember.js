@@ -24,6 +24,7 @@ class UpdateMember extends Component {
            onSubmit={function(e){
              e.preventDefault();
              this.props.onSubmit(
+              e.target.num.value,
               e.target.id.value,
               e.target.password.value,
               e.target.name.value
@@ -37,8 +38,18 @@ class UpdateMember extends Component {
               </thead>
               <tbody>
                 <tr>
-                  <td>아이디</td>
-                  <td>{this.props.data.id}</td>
+                  <td><input
+                    type = "hidden"
+                    name="num"
+                    value={this.props.data.num}
+                    onChange={this.inputFormHandler}>
+                      </input>아이디</td>
+                  <td><input
+                    type = "hidden"
+                    name="id"
+                    value={this.props.data.id}
+                    onChange={this.inputFormHandler}>
+                      </input>{this.props.data.id}</td>
                 </tr>
                 <tr>
                   <td>비밀번호</td>
@@ -46,7 +57,7 @@ class UpdateMember extends Component {
                     type = "text"
                     name="password"
                     placeholder={this.props.data.password}
-                    onUpdate={this.inputFormHandler}>
+                    onChange={this.inputFormHandler}>
                       </input></td>
                 </tr>
                 <tr>
@@ -55,7 +66,7 @@ class UpdateMember extends Component {
                   type = "text"
                   name="name"
                   placeholder={this.props.data.name}
-                  onUPdate={this.inputFormHandler}
+                  onChange={this.inputFormHandler}
                   ></input></td>
                 </tr>
                 <tr align = "center">
