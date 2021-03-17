@@ -1,25 +1,106 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import './index.css';
+import Table from "./components/Table";
+import AddMember from './components/AddMember';
+import UpdateMember from './components/UpdateMember';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
+class App extends Component {
+  constructor(props){
+    super(props);
+    this.max_list_num = 0;
+    this.selected_list_num = 0;
+    this.state = {
+      mode:'list',
+      add_member:{num:1,id:'ID',password:'1234',name:'name'},
+      contents:[
+        // {num:1, id:"Admin", password:'1234', name:'Song'}
+      ]}}
+
+  getReadContent(){
+    var i = 0;
+    while(i < this.state.contents.length){
+      var data = this.state.contents[i];
+      if(i === this.selected_list_num){
+        return data;
+      }
+      i += 1;
+    }
+  }
+
+  getContent(){
+    var _article = null;
+    if(this.state.mode === "add"){
+      _article = <AddMember onSubmit={function(_id,_password,_name){
+        this.max_list_num += 1;
+        var _contents = this.state.contents.concat(
+          {num:this.max_list_num, id:_id, password:_password, name:_name}
+        )
+        this.setState({
+          contents:_contents,
+          mode:'list'
+        })
+      }.bind(this)
+      }></AddMember>
+    }else if(this.state.mode === "update"){
+      _article = <UpdateMember
+       data = {this.getReadContent()}
+       onSubmit={function(_id, _password, _name){
+
+       }.bind(this)}
+       ></UpdateMember>
+    }
+    return _article;
+  }
+  render(){
+    return (
+      <div className="App">
+        <Table
+          data={this.state.contents}
+          buttonClick={function(_mode, _correntLine){
+            var i = 0;
+            var _contents = Array.from(this.state.contents);
+            if(_mode === 'delete'){
+              if(window.confirm('Really?')){
+                while(i < _contents.length){
+                  if(i === _correntLine){
+                    _contents.splice(i,1);
+                    this.max_list_num -= 1;
+                    break;
+                  }
+                  i += 1;
+                }
+                this.setState({
+                  mode:'list',
+                  contents:_contents
+                })
+              }
+            }else if(_mode === 'update'){
+              while(i < _contents.length){
+                if(i === _correntLine){
+                  this.selected_list_num = i;
+                  break;
+                }
+                i += 1;
+              }
+              this.setState({
+                mode:_mode,
+                contents:_contents
+              })
+            }
+          }.bind(this)}>
+        </Table>
+        <p><a href = "/add" onClick={function(e){
+            e.preventDefault();
+            this.setState({
+              mode:'add'
+            })
+          }.bind(this)}>회원추가
+          </a>
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+        {this.getContent()}
+      </div>
+    );
+  }
 }
 
 export default App;
