@@ -7,7 +7,7 @@ import UpdateMember from './components/UpdateMember';
 class App extends Component {
   constructor(props){
     super(props);
-    this.max_list_num = 0;
+    this.add_member_num = 0;
     this.selected_list_num = 0;
     this.state = {
       mode:'list',
@@ -30,9 +30,9 @@ class App extends Component {
     var _article = null;
     if(this.state.mode === "add"){
       _article = <AddMember onSubmit={function(_id,_password,_name){
-        this.max_list_num += 1;
+        this.add_member_num += 1;
         var _contents = this.state.contents.concat(
-          {num:this.max_list_num, id:_id, password:_password, name:_name}
+          {num:this.add_member_num, id:_id, password:_password, name:_name}
         )
         this.setState({
           contents:_contents,
@@ -76,7 +76,6 @@ class App extends Component {
                 while(i < _contents.length){
                   if(i === _correntLine){
                     _contents.splice(i,1);
-                    this.max_list_num -= 1;
                     break;
                   }
                   i += 1;
