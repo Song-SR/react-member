@@ -17,7 +17,6 @@ class UpdateMember extends Component {
   }
 
     render(){
-      console.log(this.props.data);
       return (  
         <article>
           <form action="/update_member" method="post"
