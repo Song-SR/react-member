@@ -47,8 +47,8 @@ class App extends Component {
         var _contents = Array.from(this.state.contents);
         var i = 0;
         while(i < _contents.length){
-          if(i+1 === Number(_num)){
-            _contents[i] = {num:i+1, id:_id, password:_password, name:_name}
+          if(_contents[i].num === Number(_num)){
+            _contents[i] = {num:_num, id:_id, password:_password, name:_name}
             break;
           }
           i += 1;
